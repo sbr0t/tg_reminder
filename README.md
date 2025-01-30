@@ -33,3 +33,4 @@
 
 ## Контакты
 TG - https://t.me/sbr0t
+Ссылка на готового бота - https://t.me/reminder_by_sbr0t_bot
