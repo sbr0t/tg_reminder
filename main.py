@@ -80,7 +80,7 @@ def check_reminder():
         now = datetime.now(TIMEZONE)
         for document in reminders_collection.find():
             if now.timetuple()[:4] == document['send_time'].timetuple()[:4]:
-                if document['is_repeatable']:
+                if document['repeatability']:
                     if document['repeatability_step'] == 'one_week':
                         dt_new = document['send_time'] + timedelta(weeks=1)
 
@@ -111,17 +111,17 @@ def check_reminder():
                     update_operation = {'$set':
                                             {'send_time': dt_new, }
                                         }
-                    users_collection.update_one(query_filter, update_operation)
+                    reminders_collection.update_one(query_filter, update_operation)
 
                 else:
                     reminders_collection.delete_one({
                         '_id': document['_id'],
                     })
 
-            user_document = users_collection.find_one({'_id': document['user_id']})
+                user_document = users_collection.find_one({'_id': document['user_id']})
 
-            bot.send_message(chat_id=document['user_id'],
-                             text=SEND_REMINDER[user_document['language']]+document['description'],)
+                bot.send_message(chat_id=document['user_id'],
+                                 text=SEND_REMINDER[user_document['language']]+document['description'],)
 
         now_time = datetime.now(TIMEZONE)
         seconds_until_next_hour = (60 - now_time.minute) * 60 - now_time.second
