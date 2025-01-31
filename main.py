@@ -118,9 +118,9 @@ def check_reminder():
                         '_id': document['_id'],
                     })
 
-            user_document = users_collection.find_one({'_id': document['chat_id']})
+            user_document = users_collection.find_one({'_id': document['user_id']})
 
-            bot.send_message(chat_id=document['chat_id'],
+            bot.send_message(chat_id=document['user_id'],
                              text=SEND_REMINDER[user_document['language']]+document['description'],)
 
         now_time = datetime.now(TIMEZONE)
